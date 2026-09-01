@@ -1,17 +1,3 @@
-"""
-Day 2 — Neuron dynamics: run a leaky integrate-and-fire (LIF) style update
-over the real connectome graph from Day 1.
-
-This is deliberately NOT a biophysically accurate Hodgkin-Huxley model
-(that's what OpenWorm's own simulator spends years on). The goal here is a
-*functional* recurrent network: each neuron has an activation level that
-leaks toward zero over time and gets pushed up or down by weighted input
-from the neurons that synapse onto it — the connectome literally IS the
-recurrent weight matrix.
-
-Think of this as a hand-rolled RNN cell, except the connectivity is real
-biology instead of randomly initialized weights.
-"""
 
 import numpy as np
 import networkx as nx

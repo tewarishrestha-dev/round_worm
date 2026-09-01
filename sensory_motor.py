@@ -1,24 +1,3 @@
-"""
-Day 3 — Sensory input and motor output mapping.
-
-We're implementing the touch-withdrawal reflex, the single best-documented
-sensorimotor circuit in C. elegans (Chalfie et al. 1985, "The neural
-circuit for touch sensitivity in Caenorhabditis elegans"). It's a cleaner
-benchmark than chemotaxis because it's a fast, well-characterized reflex
-rather than a slower gradient-following behavior:
-
-  - Anterior touch (near the head) is sensed by ALML/ALMR/AVM.
-    -> triggers BACKWARD locomotion via command interneurons AVA/AVD/AVE
-    -> executed by "A-type" motor neurons (VA*, DA*)
-
-  - Posterior touch (near the tail) is sensed by PLML/PLMR/PVM.
-    -> triggers FORWARD locomotion via command interneurons AVB/PVC
-    -> executed by "B-type" motor neurons (VB*, DB*)
-
-This gives us a clean stimulus -> motor_out function: touch the front,
-the worm should show more backward-motor drive than forward; touch the
-back, the reverse.
-"""
 
 import numpy as np
 
@@ -51,19 +30,7 @@ def classify_motor_neurons(all_neuron_names):
 
 def stimulate(net: WormNervousSystem, sensory_neurons: list[str], strength: float = 2.0,
               stim_steps: int = 5, settle_steps: int = 2) -> np.ndarray:
-    """
-    Drive a set of sensory neurons for `stim_steps`, then read out shortly
-    after (`settle_steps`), not after long free-running settling.
-
-    Important: this network has a couple of extremely high-degree hub
-    neurons (AVAL/AVAR — see Day 1's stats). Left to run freely for many
-    steps, ANY stimulus tends to converge toward the same AVA-dominated
-    attractor state, which washes out which sensory neuron actually fired
-    first. A real reflex is a fast transient, not a converged equilibrium,
-    so we read the response early — this matters more than it might look
-    like at first glance, and is worth remembering if later trials look
-    like they're "forgetting" their input.
-    """
+    
     external = np.zeros(net.n, dtype=np.float32)
     for name in sensory_neurons:
         if name in net.index:
